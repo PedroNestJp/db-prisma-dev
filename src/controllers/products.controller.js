@@ -5,25 +5,43 @@ const app = express()
 
 app.use(express.json())
 
-async function productsList() {
-
-app.get ('/produtos', async (req, res)=> {
+const getProducts = async (req, res)=> {
     const produtos = await prisma.produtos.findMany()
     console.log('All users', produtos)
     if (produtos){
         res.send(produtos)
     }
-})
+}
 
-app.get ('/produtos/:id', async (req, res)=> {
+const getproduct = async (req, res)=> {
     const id = parseInt( req.params.id )
     const produtos = await prisma.produtos.findUnique({where:{id}})
     if (produtos){res.send(produtos)}
 
-})
 }
-productsList()
-.catch((e) => console.error(e))
-.finally(async () => await prisma.disconnect())
 
-module.exports = {productsList}
+const createProducts = async (req, res)=> {
+    const data = req.body
+    const produtos = await prisma.produtos.createMany({data})
+    if (produtos){ 
+        res.send("Produto criado com sucesso ✅")
+    }
+}
+
+const createProduct = async (req, res)=> {
+    const data = req.body
+    const produtos = await prisma.produtos.create({data})
+    if (produtos){ 
+        res.send("Produto criado com sucesso ✅")
+    }
+}
+
+const deleteProduct = async (req, res)=> {
+    const id = parseInt(req.params.id)
+    const produtos = await prisma.produtos.delete({where:{id}})
+    if (produtos){
+    res.send("Produto deletado com sucesso ✅")
+    }
+}
+
+module.exports = {getProducts, getproduct, deleteProduct, createProduct, createProducts}

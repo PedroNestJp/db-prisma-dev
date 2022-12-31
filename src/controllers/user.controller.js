@@ -23,4 +23,21 @@ const createUser = async (req, res) => {
         res.send('usuário criado com sucesso ✅')
     }
 
-module.exports = {createUser, findUser, findUsers}
+const deleteUser = async (req, res)=> {
+        const id = parseInt(req.params.id)
+        const usuarios = await prisma.usuarios.delete({where:{id}})
+        if (usuarios){
+        res.send("Usuário deletado com sucesso ✅")
+        }
+    }
+
+const upUser = async (req, res)=> {
+        const id = parseInt(req.params.id)
+        const usuarios = await prisma.usuarios.update({where:{id}})
+        if (usuarios){
+        res.send("Usuário deletado com sucesso ✅")
+        }
+    }
+    
+
+module.exports = {createUser, findUser, findUsers, deleteUser, upUser, deleteUser}

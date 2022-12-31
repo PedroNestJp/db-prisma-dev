@@ -2,4 +2,5 @@ const {Router} = require('express')
 const router = Router()
 const productListController = require('../controllers/products.controller')
 
-router.post('/', productListController.productsList)
+router.get('/produtos', productListController.getProducts)
+router.get('/produtos/:id', productListController.getproduct)
