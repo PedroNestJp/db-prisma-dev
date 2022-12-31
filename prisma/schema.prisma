@@ -1,3 +1,5 @@
+
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -23,9 +25,9 @@ model enderecos {
 
 }
 
-
 model usuarios {
   id              Int         @id @default(autoincrement())
+  createdAt       DateTime    @default(now())
   cpf             String      @unique @map("cpf")   @db.VarChar(15)
   celular         String      @db.VarChar(17)
   email           String      @unique @map("email") @db.VarChar(100)
@@ -36,6 +38,7 @@ model usuarios {
   enderecos       enderecos[]
   finalizarCompra finalizarCompra[]
   carrinho        carrinho[]
+  Favoritos       produtosFavoritos[] 
 
 }
 
@@ -61,6 +64,8 @@ model produtos {
   categoria     String?    @db.VarChar(30)
   valor         String      @db.VarChar(50)
   carrinho      carrinho[]
+  Favoritos       produtosFavoritos[] 
+  
 }
 
 model carrinho{
@@ -87,5 +92,14 @@ model finalizarCompra {
   usuario           usuarios    @relation(fields: [idUsuario],references: [id])
   idUsuarioPj       Int         @map("id_usuario_pj")
   usuarioPj         usuariospj  @relation(fields: [idUsuarioPj],references: [id])
+}
+
+model produtosFavoritos {
+  id            Int   @id @default(autoincrement())
+  idProdutos    Int   @map("id_produtos")
+  produtos      produtos @relation(fields: [idProdutos], references: [id])
+  idUsuario     Int  @map("id_usuario")
+  usuario       usuarios @relation(fields: [idUsuario], references: [id])
+
 }
 

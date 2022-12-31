@@ -4,10 +4,14 @@ require('dotenv').config()
 const PORT = process.env.PORT
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
+const userRoutes = require('./src/routes/userRoutes')
 
 app.use(express.json())
 
-app.get ('/', (req, res)=> {
+app.use('/', userRoutes)
+app.post('/', userRoutes)
+
+app.get ('/home', (req, res)=> {
     res.send('hi Pedro')
 })
 
@@ -27,20 +31,6 @@ app.post('/produtos', async (req, res)=> {
     }
 })
 
-app.get ('/produtos', async (req, res)=> {
-    const produtos = await prisma.produtos.findMany()
-    if (produtos){
-        res.send(produtos)
-    }
-})
-
-app.get ('/produtos/:id', async (req, res)=> {
-    const id = parseInt( req.params.id )
-    const produtos = await prisma.produtos.findUnique({where:{id}})
-    if (produtos){res.send(produtos)}
-
-})
-
 app.delete('/produtos/:id', async (req, res)=> {
     const id = parseInt(req.params.id)
     const produtos = await prisma.produtos.delete({where:{id}})
@@ -49,29 +39,6 @@ app.delete('/produtos/:id', async (req, res)=> {
     }
 })
 
-
-app.post('/usuarios', async (req, res)=> {
-    let data = req.body
-    data.enderecos = {create:[req.body.enderecos]}
-    const usuarios = await prisma.usuarios.create({data})
-    res.send('usuário criado com sucesso ✅')
-    
-})
-
-
-app.get ('/usuarios', async (req, res)=> {
-    const usuarios = await prisma.usuarios.findMany()
-    if (usuarios){
-    res.send(usuarios)
-    }
-})
-app.get ('/usuarios/:id', async (req, res)=> {
-    const id = parseInt(req.params.id)
-    const usuarios = await prisma.usuarios.findUnique({where:{id}})
-    if (usuarios){
-    res.send(usuarios)
-    }
-})
 app.delete('/usuarios/:id', async (req, res)=> {
     const id = parseInt(req.params.id)
     const usuarios = await prisma.usuarios.delete({where:{id}})
@@ -79,7 +46,6 @@ app.delete('/usuarios/:id', async (req, res)=> {
     res.send("Usuário deletado com sucesso ✅")
     }
 })
-
 
 app.post("/usuariospj", async (req,res) => {
    const data = {  ...req.body,   enderecos: {create: [req.body.enderecos]}}
