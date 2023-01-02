@@ -1,14 +1,14 @@
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-const findUsers = async (req, res) => {
+const getUsers = async (req, res) => {
     const usuarios = await prisma.usuarios.findMany()
     if (usuarios){
     res.send(usuarios)
     }
 }
 
-const findUser = async (req, res)=> {
+const getUser = async (req, res)=> {
     const id = parseInt(req.params.id)
     const usuarios = await prisma.usuarios.findUnique({where:{id}})
     if (usuarios){
@@ -35,9 +35,17 @@ const upUser = async (req, res)=> {
         const id = parseInt(req.params.id)
         const usuarios = await prisma.usuarios.update({where:{id}})
         if (usuarios){
-        res.send("Usuário deletado com sucesso ✅")
+        res.send("Usuário atualizado com sucesso ✅")
         }
     }
-    
+const upUsers = async (req, res)=> {
+        const id = parseInt(req.params.id)
+        const data = req.body
+        const usuarios = await prisma.usuarios.updateMany({where:{id},data})
+        if (usuarios){
+        res.send("Usuário atualizado com sucesso ✅")
+        }
+    }
 
-module.exports = {createUser, findUser, findUsers, deleteUser, upUser, deleteUser}
+
+module.exports = {upUsers ,createUser, getUser, getUsers, deleteUser, upUser, deleteUser}
