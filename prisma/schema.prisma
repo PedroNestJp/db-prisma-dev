@@ -60,6 +60,7 @@ model usuariospj {
 model produtos {
   id            Int         @id @default(autoincrement())
   nome          String     @db.VarChar(50)
+  typeCpu       String?    @db.VarChar(10) @map("type_cpu")
   descricao     String?     @db.VarChar(254)
   categoria     String?    @db.VarChar(30)
   valor         String      @db.VarChar(50)

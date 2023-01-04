@@ -19,10 +19,8 @@ const getUsersPj = async (req,res)=>{
  
 const getUserPj =  async (req,res)=>{
      const id = parseInt(req.params.id)
-     const usuariospj = await prisma.usuariospj.findUnique({where:{id}})
-     if (usuariospj){
-         res.status(201).send(` O usuárioPJ ${usuariospj.nomeFantasia} de cnpj:${usuariospj.cnpj} cujo id:${id}, foi encontrado ✅`)
-     }
+     const usuariopj = await prisma.usuariospj.findUnique({where:{id}})
+     res.send(usuariopj)
  }
 
  const deleteUserPj = async (req, res)=> {
@@ -35,9 +33,14 @@ const getUserPj =  async (req,res)=>{
 
 const upUserPJ = async (req, res)=> {
     const id = parseInt(req.params.id)
-    const usuarios = await prisma.usuariospj.update({where:{id}})
-    if (usuarios){
-    res.send("Usuário atualizado com sucesso ✅")
+    const data = req.body
+    const result = await prisma.usuariospj.update({where:{id},data})
+    console.log(data, result)
+    try { 
+        if(result) {res.send(`the User whoose id is: ${id}, was succesfully updated✅}`) }
+        
+    } catch (error) {
+        res.send("Ihhh, algo de errado não está certo")
     }
 }
 

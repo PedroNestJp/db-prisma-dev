@@ -33,7 +33,8 @@ const deleteUser = async (req, res)=> {
 
 const upUser = async (req, res)=> {
         const id = parseInt(req.params.id)
-        const usuarios = await prisma.usuarios.update({where:{id}})
+        const data = req.body
+        const usuarios = await prisma.usuarios.update({where:{id},data})
         if (usuarios){
         res.send("Usuário atualizado com sucesso ✅")
         }
@@ -42,9 +43,13 @@ const upUsers = async (req, res)=> {
         const id = parseInt(req.params.id)
         const data = req.body
         const usuarios = await prisma.usuarios.updateMany({where:{id},data})
-        if (usuarios){
-        res.send("Usuário atualizado com sucesso ✅")
-        }
+        console.log(data, usuarios)
+    try { 
+        if(result) {res.send(`the Users whoose id are: ${id}, have been successfully updated✅}`) }
+        
+    } catch (error) {
+        res.send("Ihhh, algo de errado não está certo")
+    }
     }
 
 

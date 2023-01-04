@@ -3,7 +3,7 @@ const prisma = new PrismaClient()
 
 const getProducts = async (req, res)=> {
     const produtos = await prisma.produtos.findMany()
-    console.log('All users', produtos)
+    console.log('All Products', produtos)
     if (produtos){
         res.send(produtos)
     }
@@ -20,7 +20,7 @@ const createProducts = async (req, res)=> {
     const data = req.body
     const produtos = await prisma.produtos.createMany({data})
     if (produtos){ 
-        res.send("Produto criado com sucesso ✅")
+        res.send("Products created succesfully ✅")
     }
 }
 
@@ -28,7 +28,7 @@ const createProduct = async (req, res)=> {
     const data = req.body
     const produtos = await prisma.produtos.create({data})
     if (produtos){ 
-        res.send("Produto criado com sucesso ✅")
+        res.send("Product created succesfully ✅")
     }
 }
 
@@ -36,15 +36,20 @@ const deleteProduct = async (req, res)=> {
     const id = parseInt(req.params.id)
     const produtos = await prisma.produtos.delete({where:{id}})
     if (produtos){
-    res.send("Produto deletado com sucesso ✅")
+    res.send("Product deleted succesfully ✅")
     }
 }
 
 const upProduct = async (req, res)=> {
     const id = parseInt(req.params.id)
-    const usuarios = await prisma.produtos.update({where:{id}})
-    if (usuarios){
-    res.send("Usuário deletado com sucesso ✅")
+    const data = req.body
+    const result = await prisma.produtos.update({where:{id}, data})
+    console.log(data, result)
+    try { 
+        if(result) {res.send(`the product whoose id is: ${id}, was succesfully updated✅}`) }
+        
+    } catch (error) {
+        res.send("Ihhh, algo de errado não está certo")
     }
 }
 
