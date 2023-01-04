@@ -7,8 +7,10 @@ const prisma = new PrismaClient()
 const userRoutes = require('./src/routes/userRoutes')
 const userPjRoutes = require('./src/routes/userPjRoutes')
 const productsRoutes = require('./src/routes/productsRoutes')
+const cors = require('cors')
 
 app.use(express.json())
+app.use(cors())
 
 app.use(userRoutes)
 app.use(userPjRoutes)
